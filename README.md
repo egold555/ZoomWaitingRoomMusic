@@ -4,3 +4,5 @@ No? While I certianly joked about this on my Discord server, took the joke way t
 
 Is it at all useful? No. 
 Is it funny? I think so.
+
+[[Click here to download]](https://github.com/egold555/ZoomWaitingRoomMusic/raw/master/%23%20Release/ZoomWaitingRoomMusic.jar)
