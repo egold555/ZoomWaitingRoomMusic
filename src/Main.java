@@ -4,10 +4,8 @@ import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
-import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Timer;
@@ -129,6 +127,7 @@ public class Main {
 				}
 				if(isZoomRunning && didWeFindHost) {
 					waiting = true;
+					return true;
 				}
 				//System.out.println("Found window with text " + hWnd + ", Text: " + wText);
 				return true;
