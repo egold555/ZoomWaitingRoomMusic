@@ -6,11 +6,15 @@ import java.awt.PopupMenu;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
@@ -29,10 +33,8 @@ public class Main {
 	public static void main(String[] args) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
 
 		initSystemTray();
-		Clip clip = AudioSystem.getClip();
-		clip.open(AudioSystem.getAudioInputStream(new File("res/music.wav")));
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
-		clip.stop();
+		
+		Clip clip = initMusicPlayback();
 		
 		Timer timer = new Timer();
 
@@ -65,6 +67,18 @@ public class Main {
 
 	}
 	
+	private static Clip initMusicPlayback() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
+		InputStream audioSrc = Main.class.getResourceAsStream("/res/music.wav");
+		InputStream bufferedIn = new BufferedInputStream(audioSrc);
+		AudioInputStream audioStream = AudioSystem.getAudioInputStream(bufferedIn);
+		
+		Clip clip = AudioSystem.getClip();
+		clip.open(audioStream);
+		clip.loop(Clip.LOOP_CONTINUOUSLY);
+		clip.stop();
+		return clip;
+	}
+
 	private static void initSystemTray() throws IOException {
 		  if (SystemTray.isSupported()) {
 		    SystemTray tray = SystemTray.getSystemTray();
@@ -73,7 +87,8 @@ public class Main {
 		    exitItem.addActionListener(a -> System.exit(0));
 		    menu.add(exitItem);
 
-		    Image trayImage = Toolkit.getDefaultToolkit().getImage("res/icon.png");
+		    
+		    Image trayImage = ImageIO.read(Main.class.getResourceAsStream("res/icon.png"));
 		    Dimension trayIconSize = tray.getTrayIconSize();
 		    trayImage = trayImage.getScaledInstance(trayIconSize.width, trayIconSize.height, Image.SCALE_SMOOTH);
 		    
